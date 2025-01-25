@@ -79,7 +79,7 @@ class Stepper():
         angle_difference = angle_difference % 360
 
         print("\n---\n")
-        print(str(self.current_angle) + u'\N{DEGREE SIGN}', "->", str(current_angle + angle_difference) + u'\N{DEGREE SIGN}')
+        print(str(self.current_angle) + u'\N{DEGREE SIGN}', "->", str(self.current_angle + angle_difference) + u'\N{DEGREE SIGN}')
 
         if (angle_difference > 0):
             print("Forward")
