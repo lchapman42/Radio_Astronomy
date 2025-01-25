@@ -39,7 +39,7 @@ class Stepper():
         for n in range(0, n):
             self.pulse(fwd)
 
-    def update_ang(self, new_angle):
+    def go_to_angle(self, new_angle):
         if ((new_angle > 360) or (new_angle < 0)):
             print("Angle given over 360 or negative, using angle mod 360 instead")
             print("New angle:", new_angle % 360)
@@ -54,8 +54,8 @@ class Stepper():
 
             #print("debug, CAN REMOVE", abs(self.current_angle + (steps+1)*self.deg_per_step - new_angle), ";", abs(self.current_angle + steps*self.deg_per_step - new_angle ))
 
-            if (abs( (steps+1)*self.deg_per_step - new_angle) < abs(self.current_angle + steps*self.deg_per_step - new_angle )):
-                steps += 1
+            if (abs( (steps+1)*self.deg_per_step - new_angle) < abs(self.current_angle + steps*self.deg_per_step - new_angle )):    # checks if error between actual angle and target angle is lower if additional step is added
+                steps += 1                                                                                                          # adds addt step if so
             self.current_angle += steps*self.deg_per_step
             self.pulse_n_times(True, steps)
 
@@ -64,10 +64,40 @@ class Stepper():
             steps = int((self.current_angle - new_angle)/self.deg_per_step)
             # print("DEBUG, can remove", abs(self.current_angle - (steps+1)*self.deg_per_step - new_angle), ";", abs(self.current_angle - steps*self.deg_per_step - new_angle ))
 
-            if (abs(self.current_angle - (steps+1)*self.deg_per_step - new_angle) < abs(self.current_angle - steps*self.deg_per_step - new_angle )):
-                steps += 1
+            if (abs(self.current_angle - (steps+1)*self.deg_per_step - new_angle) < abs(self.current_angle - steps*self.deg_per_step - new_angle )):     # checks if error between actual angle and target angle is lower if additional step is added
+                steps += 1                                                                                                          # adds addt step if so
             self.current_angle -= steps*self.deg_per_step
             self.pulse_n_times(False, steps)
 
         print("New angle", self.current_angle)
         return self.current_angle
+
+    def change_angle(self, angle_difference):
+        if (angle_difference > 360):
+            print("Angle given over 360, using angle mod 360 instead")
+            print("New angle:", new_angle % 360)
+        angle_difference = angle_difference % 360
+
+        print("\n---\n")
+        print(str(self.current_angle) + u'\N{DEGREE SIGN}', "->", str(current_angle + angle_difference) + u'\N{DEGREE SIGN}')
+
+        if (angle_difference > 0):
+            print("Forward")
+            steps = int(angle_difference/self.deg_per_step)
+
+            #print("debug, CAN REMOVE", abs(self.current_angle + (steps+1)*self.deg_per_step - new_angle), ";", abs(self.current_angle + steps*self.deg_per_step - new_angle ))
+
+            if (abs( (steps+1)*self.deg_per_step - new_angle) < abs(self.current_angle + steps*self.deg_per_step - new_angle )):
+                steps += 1
+            self.current_angle += steps*self.deg_per_step
+            self.pulse_n_times(True, steps)
+
+        else:
+            print("Reversed")
+            steps = int(angle_difference/self.deg_per_step)
+            # print("DEBUG, can remove", abs(self.current_angle - (steps+1)*self.deg_per_step - new_angle), ";", abs(self.current_angle - steps*self.deg_per_step - new_angle ))
+
+            if (abs(self.current_angle - (steps+1)*self.deg_per_step - (self.current_angle + angle_difference)) < abs(self.current_angle - steps*self.deg_per_step - (self.current_angle - angle_difference) )):
+                steps += 1
+            self.current_angle -= steps*self.deg_per_step
+            self.pulse_n_times(False, steps)
