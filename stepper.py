@@ -28,7 +28,7 @@ class Stepper():
         GPIO.output(self.pulse_pin, GPIO.HIGH)
         GPIO.output(self.dir_pin, GPIO.HIGH)
 
-        sleep(0.001)
+        sleep(0.01)
         GPIO.output(self.pulse_pin, GPIO.LOW)
         
         if (fwd):
