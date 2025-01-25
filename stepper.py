@@ -87,7 +87,7 @@ class Stepper():
 
             #print("debug, CAN REMOVE", abs(self.current_angle + (steps+1)*self.deg_per_step - new_angle), ";", abs(self.current_angle + steps*self.deg_per_step - new_angle ))
 
-            if (abs( (steps+1)*self.deg_per_step - new_angle) < abs(self.current_angle + steps*self.deg_per_step - new_angle )):
+            if (abs( (steps+1)*self.deg_per_step - (self.current_angle + angle_difference)) < abs(self.current_angle + steps*self.deg_per_step - (self.current_angle + angle_difference) )):
                 steps += 1
             self.current_angle += steps*self.deg_per_step
             self.pulse_n_times(True, steps)
