@@ -25,15 +25,17 @@ class Stepper():
 
     def pulse(self, fwd):
         sleep(0.001)
-        GPIO.output(self.pulse_pin, GPIO.HIGH)
-        GPIO.output(self.dir_pin, GPIO.HIGH)
-
-        sleep(0.01)
-        GPIO.output(self.pulse_pin, GPIO.LOW)
-        
         if (fwd):
+            GPIO.output(self.dir_pin, GPIO.HIGH)
+        else:
             GPIO.output(self.dir_pin, GPIO.LOW)
-    
+
+        GPIO.output(self.pulse_pin, GPIO.HIGH)
+        sleep(0.001)
+        GPIO.output(self.pulse_pin, GPIO.LOW)
+
+        GPIO.output(self.dir_pin, GPIO.LOW)
+
     def pulse_n_times(self, fwd, n):
         print("Pulsed", n, "times")
         for n in range(0, n):
