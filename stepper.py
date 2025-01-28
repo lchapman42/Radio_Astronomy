@@ -1,6 +1,9 @@
 from time import sleep
 import RPi.GPIO as GPIO
 
+def cleanup_GPIO():
+    GPIO.cleanup()
+
 class Stepper():
     def __init__(self, steps_per_rev, initial_ang, pulse_pin, dir_pin):
         self.pulse_pin = pulse_pin
@@ -20,8 +23,7 @@ class Stepper():
         self.current_angle = self.initial_ang
         
     def __del__(self):
-        GPIO.cleanup()
-        print("Destructor called, cleaning up GPIO")
+        print("Destructor called")
 
     def pulse(self, fwd):
         sleep(0.001)
